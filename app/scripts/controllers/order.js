@@ -1,20 +1,11 @@
 'use strict';
 
-app.controller('OrderCtrl', function($scope, $firebase, FIREBASE_URL, $firebaseSimpleLogin){
+app.controller('OrderCtrl', function($scope, Auth, Order){
     $scope.numbersArray = [1,2,3,4,5];
     $scope.typesArray = ["Olives","Onions", "Mushrooms"];
     $scope.subOrders = [];
 
-    var ref = new Firebase(FIREBASE_URL + 'orders');
-    var authref = new Firebase(FIREBASE_URL);
-    var sync = $firebase(ref);
-    var auth = $firebaseSimpleLogin(authref);
-
-    $scope.$on('$firebaseSimpleLogin:login', function() {
-        $scope.username = auth.user.displayName;
-    });
-
-    $scope.orders = sync.$asArray();
+    $scope.orders = Order.all;
 
     $scope.addSubOrder = function() {
         $scope.subOrders.push({num: $scope.numSlices, type: $scope.sliceType});
@@ -25,6 +16,8 @@ app.controller('OrderCtrl', function($scope, $firebase, FIREBASE_URL, $firebaseS
     };
 
     $scope.shareOrder = function(){
-        $scope.orders.$add({username: $scope.username});
+        Order.create(Auth.getUid(), Auth.getUsername(), $scope.order.name);
+        Order.addSubOrderToOrder($scope.uid,'dor','dor');
+        // next I need to refer to /order/orderid
     };
 });

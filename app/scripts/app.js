@@ -5,7 +5,7 @@ var app = angular.module('pizzaSharerApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-    'firebase'
+  'firebase'
 ])
   app.config(function ($routeProvider) {
     $routeProvider

@@ -6,17 +6,22 @@ app.factory('Order',
 
         var orders = $firebase(ref);
 
+        var ordersArray = orders.$asArray();
+
         var Order = {
-            all: orders.$asArray,
-            create: function(order) {
-                return orders.$add(order);
+            all: orders,
+            create: function(masterUid, username, name) {
+                return ordersArray.$add({masterUid: masterUid, username:username, name:name});
             },
             find: function(orderId) {
-                return orders.$child(orderId);
+                return ordersArray.$child(orderId);
             },
             delete: function(orderId) {
-                return orders.$remove(orderId);
+                return ordersArray.$remove(orderId);
+            },
+            addSubOrderToOrder: function(orderId, username, subOrder) {
+                return ordersArray.child(orderId).child('num').$set('Dor');
             }
         };
         return Order;
-    });
+});

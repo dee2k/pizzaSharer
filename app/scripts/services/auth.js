@@ -14,6 +14,12 @@ app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
         },
         logout: function() {
             auth.$logout();
+        },
+        getUid: function() {
+            return auth.user.uid;
+        },
+        getUsername: function() {
+            return auth.user.displayName;
         }
     };
 
@@ -27,7 +33,7 @@ app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
         }) ;
     };
 
-    $rootScope.$on('$firebaseSimpleLogin:login', function() {
+    $rootScope.$on('$firebaseSimpleLogin:login', function(){
         $rootScope.username = auth.user.displayName;
     });
 

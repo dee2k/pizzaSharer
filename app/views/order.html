@@ -1,6 +1,10 @@
 <form role="form" ng-controller="OrderCtrl">
+    <h3>Hey {{username}} </h3>
     <div class="form-group">
-        <h3>Hey {{username}} </h3>
+        <label>Order name:</label>
+        <input type="text" class="form-control" ng-model="order.name"/>
+    </div>
+    <div class="form-group">
         <label>Your order details:</label>
         <ul ng-repeat="order in subOrders">
             <li>{{order.num}} slices with {{order.type}} <a ng-click="deleteSubOrder()">[X]</a></li>

@@ -1,0 +1,34 @@
+
+<div class="jumbotron" ng-controller="MainCtrl">
+      <h1>Welcome to pizzaSharer!</h1>
+      <h3>The app that lets you share your pizza delivery with your friends, co-workers and anyone else.</h3>
+    <div ng-hide="signedIn()">
+        <h3>Sign in to start sharing:</h3>
+         <div>
+              <a ng-click="loginWithFacebook()" class="btn btn-lg btn-social btn-facebook">
+                  <i class="fa fa-facebook"></i>
+                  Sign in with Facebook
+              </a>
+          </div>
+          <p></p>
+          <div>
+              <a class="btn btn-lg btn-social btn-google-plus">
+                  <i class="fa fa-google"></i>
+                  Sign in with Google
+              </a>
+          </div>
+    </div>
+</div>
+
+<div class="row marketing">
+    <div align="center" ng-show="signedIn()">
+        <h2>Hey {{username}}</h2>
+        <h3>What would you like to do?</h3>
+        <div class="button-group">
+            <button class="btn btn-success" ng-click="newOrder()">Add new order</button>
+            <button class="btn btn-success">Watch your order</button>
+        </div>
+    </div>
+</div>
+
+

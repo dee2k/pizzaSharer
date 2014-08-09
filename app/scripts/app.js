@@ -14,8 +14,12 @@ var app = angular.module('pizzaSharerApp', [
         controller: 'MainCtrl'
       })
       .when('/order', {
-            templateUrl: 'views/order.html',
-            controller: 'OrderCtrl'
+        templateUrl: 'views/order.html',
+        controller: 'OrderCtrl'
+      })
+      .when('/orders/:orderid', {
+        templateUrl: 'views/orderview.html',
+        controller: 'OrderCtrl'
       })
       .otherwise({
         redirectTo: '/'

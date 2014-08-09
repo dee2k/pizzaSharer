@@ -2,7 +2,6 @@
 
 app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
     var ref = new Firebase(FIREBASE_URL);
-
     var auth = $firebaseSimpleLogin(ref);
 
     var Auth = {

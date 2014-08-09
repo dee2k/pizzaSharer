@@ -1,0 +1,38 @@
+<div ng-controller="OrderCtrl">
+    <h3>Order details:</h3>
+    <ul>
+        <label class="form-control-static">Ordername:</label>
+        <p class="form-control-static">{{order.ordername}}</p>
+    </ul>
+    <ul>
+        <label class="form-control-static">Owner:</label>
+        <p class="form-control-static">{{order.username}}</a></p>
+    </ul>
+</div>
+<div>
+    <h3>Suborders</h3>
+    <ul ng-repeat="subOrder in subOrdersArray">
+        <li>{{subOrder.displayname}} wants {{subOrder.numslices}} slices with {{subOrder.slicetype}}</li>
+    </ul>
+</div>
+<div>
+    <div class="form-group">
+        <h4>Hey {{username}}</h4>
+        <label class="form-control-static" ng-show="isOwner()">Do you want to add more orders?</label>
+        <label class="form-control-static" ng-hide="isOwner()">What do you want to order?</label>
+    </div>
+    <div class="form-inline">
+        <select ng-model="numSlices"
+                ng-options="num for num in numbersArray"
+                ng-init="numSlices = numbersArray[0]">
+        </select>
+        <p class="form-control-static">Slices of</p>
+        <select ng-model="sliceType"
+                ng-options="type for type in typesArray"
+                ng-init="sliceType = typesArray[0]">
+        </select>
+        <div class="form-group">
+            <button type="button" class="btn btn-success" ng-click="addSubOrder()">Add</button>
+        </div>
+    </div>
+</div>

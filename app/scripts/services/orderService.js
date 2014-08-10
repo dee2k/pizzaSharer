@@ -7,7 +7,12 @@ app.factory('Order',
 
         var Order = {
             create: function(masterUid, username, name) {
-                    return orders.$push({ownerid: masterUid, username:username, ordername:name});
+                    var OrderObject = {
+                        ownerid: masterUid,
+                        username: username,
+                        ordername: name
+                    };
+                    return orders.$push(OrderObject);
             },
             addSubOrderToOrder: function(ref, uid, displayname, subOrder) {
                 angular.forEach(subOrder, function(value){

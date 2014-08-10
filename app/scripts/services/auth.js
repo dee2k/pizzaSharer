@@ -34,6 +34,7 @@ app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
 
     $rootScope.$on('$firebaseSimpleLogin:login', function(){
         $rootScope.username = auth.user.displayName;
+        $rootScope.uid = Auth.getUid();
     });
 
     return Auth;

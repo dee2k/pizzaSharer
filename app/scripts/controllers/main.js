@@ -1,8 +1,7 @@
 'use strict';
 
-app.controller('MainCtrl', function ($scope, Auth, FIREBASE_URL, $firebaseSimpleLogin, $location) {
+app.controller('MainCtrl', function ($scope, Auth, FIREBASE_URL, $firebaseSimpleLogin, $location, $firebase) {
         var ref = new Firebase(FIREBASE_URL);
-
         var auth = $firebaseSimpleLogin(ref);
 
         $scope.loginWithFacebook = function() {
@@ -20,7 +19,9 @@ app.controller('MainCtrl', function ($scope, Auth, FIREBASE_URL, $firebaseSimple
         };
 
         $scope.$on('$firebaseSimpleLogin:login', function() {
-            $scope.username = auth.user.displayName;
+            if (Auth.signedIn()) {
+                $scope.username = Auth.getUsername();
+            }
         });
 
 });

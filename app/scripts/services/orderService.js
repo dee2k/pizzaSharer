@@ -1,7 +1,7 @@
 'use strict';
 
 app.factory('Order',
-    function ($firebase, FIREBASE_URL) {
+    function ($firebase, FIREBASE_URL, $q) {
         var ref = new Firebase(FIREBASE_URL + 'orders');
         var orders = $firebase(ref);
 
@@ -12,7 +12,15 @@ app.factory('Order',
                         username: username,
                         ordername: name
                     };
-                    return orders.$push(OrderObject);
+                    var ref = orders.$ref();
+                    var pushId = ref.push().name();
+                    var newOrderRef = ref + '/' + pushId;
+                    var def = $q.defer();
+                    ref.child(pushId).setWithPriority(OrderObject, masterUid, function(err) {
+                        if( err ) { def.reject(err); }
+                        else { def.resolve(newOrderRef); }
+                    });
+                    return def.promise;
             },
             addSubOrderToOrder: function(ref, uid, displayname, subOrder) {
                 angular.forEach(subOrder, function(value){

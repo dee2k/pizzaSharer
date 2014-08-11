@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
+app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope, $location) {
     var ref = new Firebase(FIREBASE_URL);
     var auth = $firebaseSimpleLogin(ref);
 
@@ -12,7 +12,8 @@ app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
             return auth.user !== null;
         },
         logout: function() {
-            auth.$logout();
+            if (Auth.signedIn())
+                auth.$logout();
         },
         getUid: function() {
             if (Auth.signedIn())
@@ -29,14 +30,13 @@ app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
     };
 
     $rootScope.logout = function() {
-        return Auth.logout().then(function() {
-            $location.path('/');
-        }) ;
+        Auth.logout();
+        $location.path('/');
     };
 
     $rootScope.$on('$firebaseSimpleLogin:login', function(){
-        $rootScope.username = auth.user.displayName;
-        $rootScope.uid = Auth.getUid();
+        if (Auth.signedIn())
+            $rootScope.username = auth.user.displayName;
     });
 
     return Auth;

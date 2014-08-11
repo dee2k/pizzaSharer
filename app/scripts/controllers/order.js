@@ -28,10 +28,10 @@ app.controller('OrderCtrl', function($scope, $firebase, FIREBASE_URL, $location,
     $scope.shareOrder = function(){
         if (Auth.signedIn()) {
             Order.create(Auth.getUid(), Auth.getUsername(), $scope.order.name).then(function(ref){
-                var orderId = new Firebase(ref).name();
+                var newOrderId = new Firebase(ref).name();
                 Order.addSubOrderToOrder(ref, Auth.getUid(), Auth.getUsername(), $scope.subOrders);
                 $scope.subOrders = [];
-                $location.path('/orders/' + orderId);
+                $location.path('/orders/' + newOrderId);
             });
         }
     };

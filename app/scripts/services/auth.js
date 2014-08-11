@@ -15,10 +15,12 @@ app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
             auth.$logout();
         },
         getUid: function() {
-            return auth.user.uid;
+            if (Auth.signedIn())
+                return auth.user.uid;
         },
         getUsername: function() {
-            return auth.user.displayName;
+            if (Auth.signedIn())
+                return auth.user.displayName;
         }
     };
 

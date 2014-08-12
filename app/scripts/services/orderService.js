@@ -14,11 +14,10 @@ app.factory('Order',
                     };
                     var ref = orders.$ref();
                     var pushId = ref.push().name();
-                    var newOrderRef = ref + '/' + pushId;
                     var def = $q.defer();
                     ref.child(pushId).setWithPriority(OrderObject, masterUid, function(err) {
                         if( err ) { def.reject(err); }
-                        else { def.resolve(newOrderRef); }
+                        else { def.resolve(ref.child(pushId)); }
                     });
                     return def.promise;
             },

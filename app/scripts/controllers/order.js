@@ -13,6 +13,7 @@ app.controller('OrderCtrl', function($scope, $firebase, FIREBASE_URL, $location,
     $scope.typesArray = ["Olives","Onions", "Mushrooms"];
     $scope.subOrders = [];
 
+
     $scope.addSubOrder = function() {
         $scope.subOrders.push({num: $scope.numSlices, type: $scope.sliceType});
         if ($scope.isOrderView()){
@@ -28,16 +29,17 @@ app.controller('OrderCtrl', function($scope, $firebase, FIREBASE_URL, $location,
     $scope.shareOrder = function(){
         if (Auth.signedIn()) {
             Order.create(Auth.getUid(), Auth.getUsername(), $scope.order.name).then(function(ref){
-                var newOrderId = new Firebase(ref).name();
                 Order.addSubOrderToOrder(ref, Auth.getUid(), Auth.getUsername(), $scope.subOrders);
                 $scope.subOrders = [];
-                $location.path('/orders/' + newOrderId);
+                $location.path('/orders/' + ref.name());
+            }, function(err){
+                console.log('error'+err);
             });
         }
     };
 
     $scope.isOrderView = function() {
-        return orderId;
+        return (orderId && subOrderLoaded);
     };
 
     $scope.isOwner = function(){
@@ -55,4 +57,5 @@ app.controller('OrderCtrl', function($scope, $firebase, FIREBASE_URL, $location,
         $scope.subOrdersArray = subOrdersRef;
         subOrderLoaded = true;
     });
+
 });

@@ -29,4 +29,11 @@
             <button class="btn btn-success" ng-click="showOrders()">Watch your orders</button>
         </div>
     </div>
+    <div>
+        <p>Your orders:</p>
+        <ul ng-repeat="order in orders">
+            <li>Order name:{{order.val().ordername}}</li>
+            <li>Order link: <a href="{{'/#/orders/' + order.name()}}">Link</a></li>
+        </ul>
+    </div>
 </div>

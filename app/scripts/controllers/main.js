@@ -1,14 +1,13 @@
 'use strict';
 
-app.controller('MainCtrl', function ($scope, Auth, FIREBASE_URL, $firebaseSimpleLogin, $location, $firebase) {
-        var ref = new Firebase(FIREBASE_URL);
-        var auth = $firebaseSimpleLogin(ref);
+app.controller('MainCtrl', function ($scope, Auth, FIREBASE_URL, $firebaseSimpleLogin, $location) {
         var ordersref = new Firebase(FIREBASE_URL + 'orders');
 
+        $scope.orders = [];
+        $scope.ordersLink = [];
+
         $scope.loginWithFacebook = function() {
-            Auth.login('facebook').then(function() {
-                //
-            });
+            Auth.login('facebook');
         };
 
         $scope.logout = function() {
@@ -28,13 +27,15 @@ app.controller('MainCtrl', function ($scope, Auth, FIREBASE_URL, $firebaseSimple
         $scope.showOrders = function() {
             if (Auth.signedIn()){
                 ordersref.startAt(Auth.getUid()).endAt(Auth.getUid()).once('value', function(snap){
-                    var obj = snap.val();
-                    console.log('obj' + obj);
+                    populateOrders(snap);
                 });
             }
         };
 
-
-
+        function populateOrders(snap){
+            snap.forEach(function(childSnap){
+                $scope.orders.push(childSnap);
+            });
+        }
 
 });

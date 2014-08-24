@@ -9,9 +9,17 @@ app.controller('OrderCtrl', function($scope, $firebase, FIREBASE_URL, $location,
         orderLoaded = false,
         subOrderLoaded = false;
 
+    // Arrays for select boxes
+    // and array for user sub-orders
     $scope.numbersArray = [1,2,3,4,5];
     $scope.typesArray = ["Olives","Onions", "Mushrooms"];
     $scope.subOrders = [];
+
+    // Variables for generating the order
+    $scope.slicesMap = {};
+    $scope.pizzasArray = [];
+    $scope.totalSlices = 0;
+    $scope.dividePizzaBy = 8;
 
 
     $scope.addSubOrder = function() {
@@ -36,6 +44,53 @@ app.controller('OrderCtrl', function($scope, $firebase, FIREBASE_URL, $location,
                 console.log('error'+err);
             });
         }
+    };
+
+    $scope.generateOrder = function(){
+        // Init the slices map and total slices
+        $scope.totalSlices = 0;
+        angular.forEach($scope.typesArray, function(value){
+            $scope.slicesMap[value] = 0;
+        });
+        // Set and sum number of total slices
+        angular.forEach($scope.subOrdersArray, function(value){
+            $scope.slicesMap[value.slicetype] += value.numslices;
+            $scope.totalSlices += value.numslices;
+        });
+        // Error if not enough slices to divide by
+        if ($scope.totalSlices % $scope.dividePizzaBy !== 0){
+            console.log('error not enough slices ' + JSON.stringify($scope.slicesMap) + ' total ' + $scope.totalSlices);
+            return;
+        }
+
+        var total = $scope.totalSlices;
+        var divideBy = $scope.dividePizzaBy;
+
+        // Populate the pizzas
+        while (total !== 0) {
+            angular.forEach($scope.slicesMap, function(value, key){
+                while (value !== 0 && value % divideBy === 0 || value-divideBy >= 0){
+                    console.log('In while loop ' + JSON.stringify($scope.slicesMap) + ' total ' + total);
+                    value -= divideBy;
+                    total -= divideBy;
+                    var newPizza = {
+                        type: key,
+                        size: divideBy / $scope.dividePizzaBy,
+                        names: "None"
+                    };
+                    $scope.pizzasArray.push(newPizza);
+                }
+            });
+            divideBy /= 2;
+            console.log('After inner while loop ' + JSON.stringify($scope.slicesMap) + ' total ' + total);
+            console.log('total is ' + total + ' divideby is ' + divideBy);
+            //break;
+        }
+
+        // Log the "pizzas" array
+        angular.forEach($scope.pizzasArray, function(value, key){
+            console.log('Pizzas array, value is ' + JSON.stringify(value) + ' Key is ' + key);
+        });
     };
 
     $scope.isOrderView = function() {

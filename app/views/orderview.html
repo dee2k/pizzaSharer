@@ -34,5 +34,8 @@
         <div class="form-group">
             <button type="button" class="btn btn-success" ng-click="addSubOrder()">Add</button>
         </div>
+        <div ng-show="isOwner()">
+            <button type="button" class="btn btn-success" ng-click="generateOrder()">Generate Order</button>
+        </div>
     </div>
 </div>
